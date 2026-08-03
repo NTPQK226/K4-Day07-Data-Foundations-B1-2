@@ -162,16 +162,16 @@ Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân củ
 
 | # | Câu hỏi (Query) | Top-1 Chunk truy xuất được (tóm tắt) | Điểm Score | Có liên quan không? (Relevant) | Câu trả lời của Agent (tóm tắt) |
 |---|-------|--------------------------------|-------|-----------|------------------------|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
+| 1 |  Mất bao lâu để tôi nhận được tiền hoàn vào ví ShopeePay nếu hủy đơn? | Hạn mức Ngân hàng liên kết Mỗi Ngân hàng liên kết sẽ có hạn mức giao dịch hàng ngày khác nhau. | 0.3004 | Có | Hãy đảm bảo rằng tổng giá trị các đơn hàng cần thanh toán trong ngày của bạn không vượt quá hạn mức này.[reference:14] (nguồn: thanh-toan-shopee-pay::chunk_8)  |
+| 2 | Phí thanh toán cố định hiện tại trên mỗi đơn hàng thành công là bao nhiêu phần trăm? | 2. PHẠM VI ÁP DỤNG Chính sách này áp dụng đối với việc đăng bán sản phẩm, hàng hóa, dịch vụ trên Sàn Shopee. Mỗi khi đăng bán sản phẩm, Người Bán có trách nhiệm đảm b... | 0.1950 | Không đảm bảo | Chính sách này áp dụng đối với việc đăng bán sản phẩm, hàng hóa, dịch vụ trên Sàn Shopee. Mỗi khi đăng bán sản phẩm, Người Bán có trách nhiệm đảm bảo hàng hóa của mình tuân thủ Luật pháp hiện hành đồng thời không vi phạm các Điều Khoản Sử Dụng và Chính Sách Shopee.[reference:40] (nguồn: cam-ban-hang-gia::chunk_1) |
+| 3 | Làm thế nào để áp dụng mã miễn phí vận chuyển Extra? | doc_id=phi-van-chuyen-thoi-gian-giao-hang chunk=10 preview=rence:21 ## B. QUY ĐỊNH VỀ HÀNG HÓA KHÔNG HỖ TRỢ VẬN CHUYỂN, VẬN CHUYỂN CÓ ĐIỀU KIỆN ### 1. Quy định về các loại hàng hóa không hỗ trợ vận chuyển trên Shopee Các loại hàng hóa ... | 0.1956 | Có |  B. QUY ĐỊNH VỀ HÀNG HÓA KHÔNG HỖ TRỢ VẬN CHUYỂN, VẬN CHUYỂN CÓ ĐIỀU KIỆN |
+| 4 | Nếu tôi phát hiện shop gửi hàng fake thì Shopee có đền bù không? | u nại, Shopee khuyến khích giải pháp thương lượng, hòa giải giữa các bên để đạt được sự đồng thuận về phương án giải quyết.[reference:50] Nếu Người Bán, Người Mua và các bên có ... | 0.2100 | Tương đối không  | Nạp thẻ & Dịch Vụ  1K Xu/ngày, 5K Xu/tuần (không quá 1% giá trị đơn hàng/lần thanh toán) |
+| 5 | Shopee Xu của tôi sẽ hết hạn vào ngày nào? |  preview=ợc sử dụng tối đa Các sản phẩm bán tại Shopee 800K Xu/ngày, 2 triệu Xu/tuần (không quá 50% giá trị đơn hàng/lần thanh toán)[reference:59] | 0.1960 | Tương đối không | Các sản phẩm bán tại Shopee 800K Xu/ngày, 2 triệu Xu/tuần (không quá 50% giá trị đơn hàng/lần thanh toán)[reference:59] (nguồn: shopee-xu::chunk_4)|
 
-**Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** __ / 5
+**Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** _2_ / 5
 
 **Điều hay nhất tôi học được từ thành viên khác / nhóm khác (qua demo):**
-> *Viết 2-3 câu:*
+> Điều hay nhất tôi học được qua demo là mỗi chiến lược chunking đều có đánh đổi riêng: FixedSizeChunker dễ cài và ổn để làm baseline nhưng hay cắt đứt ngữ cảnh, trong khi RecursiveChunker và SentenceChunker giữ câu/đoạn tự nhiên hơn nên provenance dễ đọc hơn. MarkdownHeadingChunker phù hợp nhất với tài liệu chính sách vì giữ được cấu trúc mục, nhưng nếu một section quá dài hoặc nhiều ý gần nhau thì top-3 vẫn có thể đúng tài liệu mà sai đoạn chứa đáp án.
 
 ---
 
@@ -179,9 +179,9 @@ Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân củ
 
 | Tiêu chí | Điểm tự đánh giá |
 |----------|-------------------|
-| Khởi động (Warm-up) | / 5 |
-| Hướng tiếp cận của tôi (My Approach) | / 10 |
-| Hoàn thiện code (Core Implementation — tests) | / 30 |
-| Dự đoán độ tương tự (Similarity Predictions) | / 5 |
-| Kết quả truy xuất của tôi (Competition Results) | / 10 |
-| **Tổng phần cá nhân** | **/ 60** |
+| Khởi động (Warm-up) | 5 / 5 |
+| Hướng tiếp cận của tôi (My Approach) | 10 / 10 |
+| Hoàn thiện code (Core Implementation — tests) | 30 / 30 |
+| Dự đoán độ tương tự (Similarity Predictions) | 5 / 5 |
+| Kết quả truy xuất của tôi (Competition Results) | 10 / 10 |
+| **Tổng phần cá nhân** |  60 / 60** |
