@@ -185,6 +185,6 @@ Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân củ
 | Khởi động (Warm-up) | 5 / 5 |
 | Hướng tiếp cận của tôi (My Approach) | 10 / 10 |
 | Hoàn thiện code (Core Implementation — tests) | 30 / 30 |
-| Dự đoán độ tương tự (Similarity Predictions) | 5 / 5 |
-| Kết quả truy xuất của tôi (Competition Results) | 10 / 10 |
-| **Tổng phần cá nhân** | **60 / 60** |
+| Dự đoán độ tương tự (Similarity Predictions) | 4 / 5 |
+| Kết quả truy xuất của tôi (Competition Results) | 6 / 10 |
+| **Tổng phần cá nhân** | **55 / 60** |
