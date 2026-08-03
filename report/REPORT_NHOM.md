@@ -1,8 +1,17 @@
 # Báo Cáo Nhóm — Lab 7: Embedding & Vector Store
 
-**Nhóm:** [Tên nhóm]
-**Thành viên:** [Họ tên từng thành viên]
-**Ngày:** [Ngày nộp]
+**Nhóm:** B1-2
+
+**Thành viên:** 
+Nguyễn Tuấn Phong - 2A202601038
+
+Nguyễn Tuấn Dương - 2A202601966
+
+Nguyễn Hữu Công - 2A202601732
+
+Tạ Quốc Tuấn - 2A202601114
+
+**Ngày:** 03/08/2026
 
 > **Nộp 1 bản / nhóm.** Phần cá nhân (hướng tiếp cận, kết quả riêng, dự đoán…) mỗi thành viên nộp riêng trong `REPORT_CANHAN.md`. Chi tiết thang điểm: `docs/SCORING.md`.
 
@@ -70,7 +79,7 @@ Chạy `ChunkingStrategyComparator().compare()` trên 2-3 tài liệu:
 - **Loại chiến lược:** RecursiveChunker (chunk_size=500)
 - **Mô tả & lý do chọn:** Cố gắng tách văn bản tự nhiên theo thứ tự ưu tiên các ký tự phân cách (đoạn, câu, từ). Phù hợp với văn bản chính sách có cấu trúc đa dạng.
 
-**Thành viên 3 — Nguyễn Thanh Phong**
+**Thành viên 3 — Nguyễn Tuấn Phong**
 - **Loại chiến lược:** SentenceChunker (max_sentences=3)
 - **Mô tả & lý do chọn:** Văn bản quy định thường chia theo câu hoàn chỉnh. Việc tách theo số lượng câu giúp giữ trọn ngữ nghĩa, tránh bị cắt đoạn vô nghĩa.
 
