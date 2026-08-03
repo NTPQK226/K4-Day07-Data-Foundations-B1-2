@@ -1,5 +1,12 @@
 # K4 — Ngày 7: Nền Tảng Dữ Liệu, Embedding & Vector Store
 
+**Nhóm:** B1-2
+**Thành viên:**
+- Nguyễn Tuấn Phong — 2A202601038
+- Nguyễn Tuấn Dương — 2A202601966
+- Nguyễn Hữu Công — 2A202601732
+- Tạ Quốc Tuấn — 2A202601114
+
 > Bản K4 của Lab 07. Hướng dẫn Codelabs được phát riêng trên lớp/LMS (không kèm trong repo); yêu cầu Giai đoạn 2 riêng xem [K4_VARIANT.md](K4_VARIANT.md).
 
 ---
