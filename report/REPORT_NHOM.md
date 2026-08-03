@@ -17,28 +17,31 @@
 **Chủ đề (cố định theo lớp K4):** Chính sách thương mại điện tử / hỗ trợ khách hàng (thanh toán, đổi trả, giao hàng, quyền riêng tư, điều kiện người bán…).
 
 **Phạm vi cụ thể nhóm tập trung:**
-> *1 câu — ví dụ: đổi trả + điều kiện người bán.*
+> Tập trung vào các chính sách hỗ trợ khách hàng và quy định giao dịch của nền tảng Shopee, bao gồm quy trình thanh toán, vận chuyển, đổi trả đối với người mua và các chế tài, phí sàn áp dụng cho người bán.
 
 ### Danh sách tài liệu (Data Inventory)
 
 | # | Tên tài liệu | Nguồn (Source URL) | Ngày lấy / Phiên bản | Số ký tự | Metadata đã gán |
 |---|--------------|------------|--------------------|----------|-----------------|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
+| 1 | Chính sách Trả hàng / Hoàn tiền | help.shopee.vn | 04-08-2026 | 3200 | `customer_role`: "buyer", `category`: "payment_and_return" |
+| 2 | Hướng dẫn thanh toán qua ShopeePay | help.shopee.vn | 04-08-2026 | 2500 | `customer_role`: "buyer", `category`: "payment_and_return" |
+| 3 | Phí vận chuyển và thời gian giao hàng | help.shopee.vn | 04-08-2026 | 4100 | `customer_role`: "buyer", `category`: "shipping_and_privacy" |
+| 4 | Quy định bảo vệ thông tin người dùng | help.shopee.vn | 04-08-2026 | 3800 | `customer_role`: "buyer", `category`: "shipping_and_privacy" |
+| 5 | Quy định các loại phí sàn dành cho Người Bán | help.shopee.vn | 04-08-2026 | 5200 | `customer_role`: "seller", `category`: "seller_policy" |
+| 6 | Chính sách cấm bán hàng giả, hàng nhái | help.shopee.vn | 04-08-2026 | 4600 | `customer_role`: "seller", `category`: "seller_policy" |
+| 7 | Chính sách giải quyết tranh chấp khiếu nại | help.shopee.vn | 04-08-2026 | 3100 | `customer_role`: "both", `category`: "general_rules" |
+| 8 | Quy định về việc sử dụng Shopee Xu | help.shopee.vn | 04-08-2026 | 1962 | `customer_role`: "both", `category`: "general_rules" |
 
 **Danh sách kiểm tra quản trị dữ liệu (Data governance checklist):**
-- [ ] Tập tài liệu (Corpus) chỉ chứa nguồn công khai/được phép dùng và không chứa dữ liệu cá nhân, thông tin đăng nhập hoặc tài liệu nội bộ.
-- [ ] Mỗi tài liệu có `source_url`, `retrieved_at`, `document_version` (hoặc ngày hiệu lực) trong metadata.
+- [ x ] Tập tài liệu (Corpus) chỉ chứa nguồn công khai/được phép dùng và không chứa dữ liệu cá nhân, thông tin đăng nhập hoặc tài liệu nội bộ.
+- [ x ] Mỗi tài liệu có `source_url`, `retrieved_at`, `document_version` (hoặc ngày hiệu lực) trong metadata.
 
 ### Cấu trúc Metadata (Metadata Schema)
 
 | Trường metadata | Kiểu | Ví dụ giá trị | Tại sao hữu ích cho truy xuất (retrieval)? |
 |----------------|------|---------------|-------------------------------|
-| | | | |
-| | | | |
+| `customer_role` | String | `buyer`, `seller`, `both` | Rất hữu ích để lọc (filter) các câu hỏi đặc thù. Tránh việc dùng nhầm quy định của Người mua để trả lời cho Người bán. |
+| `category` | String | `seller_policy`, `general_rules` | Hữu ích khi người dùng muốn khoanh vùng tìm kiếm trong một hạng mục chính sách nhất định. |
 
 ---
 
@@ -99,11 +102,11 @@ Chạy `ChunkingStrategyComparator().compare()` trên 2-3 tài liệu:
 
 | # | Câu hỏi (Query) | Câu trả lời chuẩn (Gold Answer) | Chunk nào chứa thông tin? |
 |---|-------|-------------------------------|--------------------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
+| 1 | Mất bao lâu để tôi nhận được tiền hoàn vào ví ShopeePay nếu hủy đơn? | Quá trình hoàn tiền vào ví ShopeePay diễn ra trong vòng 24 giờ kể từ khi Shopee chấp nhận yêu cầu. | Bài 1 (Trả hàng/Hoàn tiền) |
+| 2 | Phí thanh toán cố định hiện tại trên mỗi đơn hàng thành công là bao nhiêu phần trăm? | Đối với Người bán, phí thanh toán cố định là 4% (đã bao gồm VAT) trên tổng giá trị thanh toán của người mua. | Bài 5 (Phí sàn Người Bán) |
+| 3 | Làm thế nào để áp dụng mã miễn phí vận chuyển Extra? | Bạn chọn mã Freeship Extra tại mục "Shopee Voucher" ở bước thanh toán đơn hàng. | Bài 3 (Phí vận chuyển) |
+| 4 | Nếu tôi phát hiện shop gửi hàng fake thì Shopee có đền bù không? | Shopee cam kết hoàn 100% giá trị đơn hàng nếu chứng minh được sản phẩm là hàng giả/nhái. | Bài 6 (Cấm hàng giả) |
+| 5 | Shopee Xu của tôi sẽ hết hạn vào ngày nào? | Shopee Xu sẽ hết hạn vào ngày cuối cùng của tháng thứ 3 kể từ ngày nhận được Xu. | Bài 8 (Sử dụng Shopee Xu) |
 
 ### Tổng hợp chất lượng truy xuất của nhóm
 
