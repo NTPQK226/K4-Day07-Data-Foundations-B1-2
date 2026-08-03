@@ -114,6 +114,42 @@ class RecursiveChunker:
         return chunks
 
 
+class MarkdownHeadingChunker:
+    """
+    Split text into chunks based on Markdown headings (e.g., #, ##, ###).
+    Each chunk will start with a heading and contain the content under it.
+    """
+
+    def chunk(self, text: str) -> list[str]:
+        if not text:
+            return []
+
+        # Split text using markdown headings as delimiters, keeping the delimiter
+        parts = re.split(r'(?m)^(#+ .*?\n)', text)
+        
+        chunks = []
+        current_chunk = ""
+        
+        for part in parts:
+            if not part:
+                continue
+            if re.match(r'^#+ ', part):
+                if current_chunk.strip():
+                    chunks.append(current_chunk.strip())
+                current_chunk = part
+            else:
+                current_chunk += part
+                
+        if current_chunk.strip():
+            chunks.append(current_chunk.strip())
+            
+        if not chunks and text.strip():
+            return [text.strip()]
+            
+        return chunks
+
+
+
 def _dot(a: list[float], b: list[float]) -> float:
     return sum(x * y for x, y in zip(a, b))
 

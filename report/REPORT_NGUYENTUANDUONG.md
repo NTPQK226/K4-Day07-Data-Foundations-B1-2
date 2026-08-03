@@ -123,16 +123,16 @@ Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân củ
 
 | # | Câu hỏi (Query) | Top-1 Chunk truy xuất được (tóm tắt) | Điểm Score | Có liên quan không? (Relevant) | Câu trả lời của Agent (tóm tắt) |
 |---|-------|--------------------------------|-------|-----------|------------------------|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
+| 1 | Mất bao lâu để tôi nhận được tiền hoàn vào ví ShopeePay nếu hủy đơn? | Tình trạng Xác minh Ví, Hạn mức giao dịch (thanh-toan-shopee-pay.md) | 0.5795 | Không (Không có thời gian hoàn tiền) | Trả lời dựa trên giới hạn giao dịch ShopeePay, không nhắc đến thời gian hoàn tiền. |
+| 2 | Phí thanh toán cố định hiện tại trên mỗi đơn hàng thành công là bao nhiêu phần trăm? | Tình trạng Xác minh Ví (thanh-toan-shopee-pay.md) | 0.5229 | Không (Chỉ nói về xác minh ví) | Đề cập đến hạn mức ví ShopeePay thay vì phí thanh toán cố định. |
+| 3 | Làm thế nào để áp dụng mã miễn phí vận chuyển Extra? | Phạm vi áp dụng Chính Sách Vận Chuyển (phi-van-chuyen-thoi-gian-giao-hang.md) | 0.4946 | Không (Không có hướng dẫn dùng mã) | Chỉ giải thích phạm vi vận chuyển hàng hóa, không trả lời cách dùng mã. |
+| 4 | Nếu tôi phát hiện shop gửi hàng fake thì Shopee có đền bù không? | QUY ĐỊNH VỀ ĐĂNG BÁN SẢN PHẨM TRÊN SHOPEE (phi-san-cho-nguoi-ban.md) | 0.5470 | Không (Top-1 không nói về đền bù) | Nêu Thời gian Shopee Đảm bảo giải quyết tranh chấp, không khẳng định đền bù. |
+| 5 | Shopee Xu của tôi sẽ hết hạn vào ngày nào? | CHÍNH SÁCH VẬN CHUYỂN SHOPEE (phi-van-chuyen-thoi-gian-giao-hang.md) | 0.5614 | Không (Top-1 nói về vận chuyển) | Hướng dẫn thứ tự sử dụng Voucher và Shopee Xu, không nhắc đến ngày hết hạn. |
 
-**Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** __ / 5
+**Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** 2 / 5 (Câu 4 có top-2 liên quan hàng giả, Câu 5 có top-3 liên quan Shopee Xu)
 
 **Điều hay nhất tôi học được từ thành viên khác / nhóm khác (qua demo):**
-> *Viết 2-3 câu:*
+> *Mỗi chiến lược cắt văn bản đều có ưu/nhược điểm riêng. `SentenceChunker` (của Phong) giữ trọn vẹn ngữ nghĩa câu nhưng dễ tạo chunk dài, `FixedSizeChunker` (của Công) dễ kiểm soát kích thước nhưng có thể cắt ngang ngữ cảnh, còn `RecursiveChunker` (của Tuấn) tách đoạn mượt mà hơn. Cuối cùng, `MarkdownHeadingChunker` của tôi tỏ ra phù hợp nhất cho các tài liệu chính sách vì nó tôn trọng tuyệt đối cấu trúc mục lục tự nhiên của văn bản.*
 
 ---
 
@@ -140,9 +140,9 @@ Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân củ
 
 | Tiêu chí | Điểm tự đánh giá |
 |----------|-------------------|
-| Khởi động (Warm-up) | / 5 |
-| Hướng tiếp cận của tôi (My Approach) | / 10 |
-| Hoàn thiện code (Core Implementation — tests) | / 30 |
-| Dự đoán độ tương tự (Similarity Predictions) | / 5 |
-| Kết quả truy xuất của tôi (Competition Results) | / 10 |
-| **Tổng phần cá nhân** | **/ 60** |
+| Khởi động (Warm-up) | 5 / 5 |
+| Hướng tiếp cận của tôi (My Approach) | 10 / 10 |
+| Hoàn thiện code (Core Implementation — tests) | 30 / 30 |
+| Dự đoán độ tương tự (Similarity Predictions) | 5 / 5 |
+| Kết quả truy xuất của tôi (Competition Results) | 2 / 10 |
+| **Tổng phần cá nhân** | **52 / 60** |
