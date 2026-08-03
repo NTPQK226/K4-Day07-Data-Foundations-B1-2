@@ -21,7 +21,12 @@ import ingest
 # Gói cá nhân (tên chứa gạch nối nên phải nạp qua importlib).
 pkg = importlib.import_module("src.congnh-01732")
 
-DATA_DIR = os.getenv("LAB_DATA_DIR", "data/k4_ecommerce")
+DATA_DIR = os.getenv("LAB_DATA_DIR", "data")
+
+# Chỉ giữ lại các tài liệu chính sách Shopee thật (có source_url từ help.shopee.vn),
+# loại bỏ các file template/mẫu của lab (python_intro, rag_system_design, ...) và
+# placeholder trong data/k4_ecommerce (source_url example.com).
+SHOPEE_SOURCE_MARK = "help.shopee.vn"
 
 # ---------------------------------------------------------------- Phần 4
 # 5 cặp câu — dự đoán đã ghi trong báo cáo TRƯỚC khi chạy kịch bản này.
@@ -41,12 +46,12 @@ SIMILARITY_PAIRS = [
 # --------------------------------------------------------------- Phần 5
 # 5 câu hỏi benchmark (DỰ THẢO — cần thống nhất với nhóm trong REPORT_NHOM.md).
 BENCHMARK_QUERIES = [
-    {"query": "Người mua cần làm gì để yêu cầu đổi trả sản phẩm đã mua?", "filter": None},
-    {"query": "Yêu cầu đổi trả cần kèm theo gì khi hàng bị lỗi?", "filter": None},
-    {"query": "Người bán phải cung cấp những thông tin gì khi đăng bán sản phẩm?", "filter": None},
-    {"query": "Những sản phẩm nào không được phép đăng bán?", "filter": None},
-    {"query": "Quy định đăng bán áp dụng cho người bán là gì?",
+    {"query": "Mất bao lâu để tôi nhận được tiền hoàn vào ví ShopeePay nếu hủy đơn?", "filter": None},
+    {"query": "Phí thanh toán cố định hiện tại trên mỗi đơn hàng thành công là bao nhiêu phần trăm?",
      "filter": {"customer_role": "seller"}},
+    {"query": "Làm thế nào để áp dụng mã miễn phí vận chuyển Extra?", "filter": None},
+    {"query": "Nếu tôi phát hiện shop gửi hàng fake thì Shopee có đền bù không?", "filter": None},
+    {"query": "Shopee Xu của tôi sẽ hết hạn vào ngày nào?", "filter": None},
 ]
 
 
@@ -84,6 +89,11 @@ def extractive_llm(prompt: str) -> str:
 def run_benchmark(embedder) -> None:
     print("\n=== Phần 5: 5 câu hỏi benchmark trên store tự viết ===")
     docs = ingest.load_documents(DATA_DIR)
+    docs = [
+        d for d in docs
+        if SHOPEE_SOURCE_MARK in str(d.metadata.get("source_url", ""))
+    ]
+    print(f"Corpus: {len(docs)} tài liệu chính sách Shopee thật (sau khi lọc template/placeholder).")
     chunker = pkg.FixedSizeChunker(chunk_size=500, overlap=50)  # baseline
     chunk_docs = [c for d in docs for c in ingest.chunk_document(d, chunker)]
     store = pkg.EmbeddingStore(collection_name="lab7_kb_congnh", embedding_fn=embedder)

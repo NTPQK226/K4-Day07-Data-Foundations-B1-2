@@ -165,16 +165,16 @@ Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân củ
 
 | # | Câu hỏi (Query) | Top-1 Chunk truy xuất được (tóm tắt) | Điểm Score | Có liên quan không? (Relevant) | Câu trả lời của Agent (tóm tắt) |
 |---|-------|--------------------------------|-------|-----------|------------------------|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
+| 1 | Mất bao lâu để tôi nhận được tiền hoàn vào ví ShopeePay nếu hủy đơn? | Hướng dẫn thanh toán đơn giá trị cao bằng Ví ShopeePay — hạn mức giao dịch 100 triệu/ngày, cách nạp tiền từ ngân hàng liên kết (thanh-toan-shopee-pay::chunk_3) | 0.6780 | **Không** — chunk nói về hạn mức thanh toán, không đề cập thời gian hoàn tiền khi hủy đơn | "Bạn có thể nạp tiền từ ngân hàng liên kết vào Ví ShopeePay trước ngày khuyến mãi..." — sai, không trả lời đúng câu hỏi (extractive stub trả về chunk đầu tiên; LLM thật sẽ nói "không có thông tin") |
+| 2 | Phí thanh toán cố định hiện tại trên mỗi đơn hàng thành công là bao nhiêu phần trăm? | Chính sách cấm/hạn chế sản phẩm — các chế tài vi phạm: xóa SP, giới hạn tài khoản, cấn trừ số dư, bồi thường (cam-ban-hang-gia::chunk_3) | 0.3685 | **Không** — chunk nói về chế tài vi phạm chính sách đăng bán, không đề cập phí thanh toán cố định % | "Việc áp dụng các biện pháp chế tài cụ thể khác sẽ thuộc toàn quyền quyết định của Shopee..." — sai chủ đề (filter metadata `customer_role=seller` giúp thu hẹp đúng vai trò nhưng corpus không chứa thông tin phí) |
+| 3 | Làm thế nào để áp dụng mã miễn phí vận chuyển Extra? | Chính sách vận chuyển Shopee — định nghĩa Người Mua/Người Bán, phạm vi áp dụng (phi-van-chuyen-thoi-gian-giao-hang::chunk_1) | 0.5642 | **Không** — chunk định nghĩa thuật ngữ và phạm vi chính sách vận chuyển, không có hướng dẫn áp dụng mã Extra | "Bằng cách sử dụng dịch vụ vận chuyển được hỗ trợ trên Sàn Shopee, Người Mua/Người Bán đã thừa nhận và đồng ý..." — sai, extractive stub lấy nhầm nội dung định nghĩa |
+| 4 | Nếu tôi phát hiện shop gửi hàng fake thì Shopee có đền bù không? | Quy trình giải quyết tranh chấp/khiếu nại — Bước 1: tạo khiếu nại Trả Hàng/Hoàn Tiền qua mục Đơn Mua trên app Shopee (tranh-chap-khieu-nai::chunk_2) | 0.6121 | **Có** — chunk hướng dẫn tạo khiếu nại Trả Hàng/Hoàn Tiền, chính là bước đầu tiên để yêu cầu Shopee xử lý khi nhận hàng fake; top-3 (cam-ban-hang-gia) cũng liệt kê hàng nhái/hàng giả là vi phạm và chế tài gồm "bồi thường thiệt hại" | "Để tạo khiếu nại yêu cầu Trả Hàng/Hoàn Tiền tới Shopee, Người Mua cần bấm khiếu nại ngay trong ứng dụng Shopee/website, mục Đơn Mua..." — đúng hướng (LLM thật sẽ tổng hợp: có thể yêu cầu hoàn tiền qua quy trình khiếu nại) |
+| 5 | Shopee Xu của tôi sẽ hết hạn vào ngày nào? | Số Shopee Xu được sử dụng tối đa — giới hạn 800K Xu/ngày, 2 triệu Xu/tuần, hoàn Xu khi hủy đơn (shopee-xu::chunk_1) | 0.6015 | **Không** — chunk nói về giới hạn sử dụng và hoàn Xu khi hủy/trả hàng, không đề cập ngày hết hạn của Shopee Xu | "Shopee Xu sẽ được hoàn lại vào mục Shopee Xu của Người dùng nếu đơn hàng có sử dụng giảm giá từ Shopee Xu bị hủy..." — sai, trả lời về hoàn Xu chứ không phải hết hạn |
 
-**Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** __ / 5
+**Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** **1 / 5** (chỉ câu 4 — hàng fake → khiếu nại — có chunk liên quan trong top-3; cam-ban-hang-gia::chunk_1 cũng nằm trong top-3 của câu 4 và đề cập "hàng nhái, hàng giả" + "bồi thường thiệt hại")
 
 **Điều hay nhất tôi học được từ thành viên khác / nhóm khác (qua demo):**
-> *Viết 2-3 câu:*
+> Ba bài học chính từ kết quả benchmark này: (1) **Corpus quyết định chất lượng truy xuất** — 5/5 câu hỏi đều được retrieval map đúng miền chủ đề (ShopeePay, vận chuyển, Shopee Xu…) nhưng chỉ 1/5 có thông tin để trả lời vì các file excerpt quá ngắn (22-36 dòng), thiếu chi tiết cụ thể (thời gian hoàn tiền, % phí, ngày hết hạn); (2) **Metadata filter có ích** (câu 2 lọc `customer_role=seller` giúp loại bỏ 6/8 tài liệu không liên quan, giảm noise) nhưng không thể bù đắp cho corpus thiếu thông tin; (3) **LLM stub extractive không đủ** — cần LLM thật để phân biệt "ngữ cảnh có liên quan nhưng không đủ" → nói "không có thông tin", thay vì trích nguyên chunk đầu tiên gây sai lạc.
 
 ---
 
@@ -182,9 +182,9 @@ Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân củ
 
 | Tiêu chí | Điểm tự đánh giá |
 |----------|-------------------|
-| Khởi động (Warm-up) | / 5 |
-| Hướng tiếp cận của tôi (My Approach) | / 10 |
-| Hoàn thiện code (Core Implementation — tests) | / 30 |
-| Dự đoán độ tương tự (Similarity Predictions) | / 5 |
-| Kết quả truy xuất của tôi (Competition Results) | / 10 |
-| **Tổng phần cá nhân** | **/ 60** |
+| Khởi động (Warm-up) | 5 / 5 |
+| Hướng tiếp cận của tôi (My Approach) | 10 / 10 |
+| Hoàn thiện code (Core Implementation — tests) | 30 / 30 |
+| Dự đoán độ tương tự (Similarity Predictions) | 3 / 5 |
+| Kết quả truy xuất của tôi (Competition Results) | 1 / 10 |
+| **Tổng phần cá nhân** | **49 / 60** |
