@@ -1,8 +1,8 @@
 # Báo Cáo Cá Nhân — Lab 7: Embedding & Vector Store
 
-**Họ tên:** [Tên sinh viên]
-**Nhóm:** [Tên nhóm]
-**Ngày:** [Ngày nộp]
+**Họ tên:** Tạ Quốc Tuấn
+**Nhóm:** B1-2
+**Ngày:** 03/08/2026
 
 > **Nộp 1 bản / sinh viên.** Phần nhóm (lựa chọn tài liệu, thiết kế chiến lược, bộ câu hỏi đánh giá, demo) nộp chung 1 bản trong `REPORT_NHOM.md`. Chi tiết thang điểm: `docs/SCORING.md`.
 
@@ -144,14 +144,15 @@ tests/test_solution.py::TestEmbeddingStoreDeleteDocument::test_delete_returns_tr
 
 | Cặp | Câu A | Câu B | Dự đoán | Điểm thực tế | Đúng? |
 |------|-----------|-----------|---------|--------------|-------|
-| 1 | | | cao / thấp | | |
-| 2 | | | cao / thấp | | |
-| 3 | | | cao / thấp | | |
-| 4 | | | cao / thấp | | |
-| 5 | | | cao / thấp | | |
+| 1 | Hôm nay trời mưa rất lớn. | Trời đang có mưa to. | cao | 0.7391 | Đúng |
+| 2 | Tôi thích uống cà phê vào buổi sáng. | Mỗi sáng tôi thường uống một tách cà phê. | cao | 0.7705 | Đúng |
+| 3 | Con mèo đang ngủ trên ghế. | Con chó đang chạy ngoài sân. | thấp | 0.3935 | Đúng |
+| 4 | Tôi không thích bộ phim này. | Trời hôm nay nắng đẹp. | Thấp | 0.3094 | Đúng |
+| 5 | Chiếc điện thoại này có giá khá rẻ. | Sản phẩm này không quá đắt. | tương đối tương đồng (0.6 - 0.7) | 0.4869 | Thấp hơn kì vọng |
 
 **Kết quả nào bất ngờ nhất? Điều này nói gì về cách embeddings biểu diễn ý nghĩa?**
 > *Viết 2-3 câu:*
+Kết quả bất ngờ nhất là Cặp 5, khi hai câu mang ngữ nghĩa rất tương đồng nhưng điểm tương đồng Cosine thực tế chỉ đạt 0.4869, thấp hơn so với kì vọng. Điều này cho thấy các mô hình Embeddings đơn giản thường phụ thuộc nhiều vào tương đồng từ vựng/ngữ pháp bề mặt thay suy luận logic. Khi gặp các cấu trúc phủ định hoặc từ đồng nghĩa/trái nghĩa phức tạp (như "không quá đắt" = "rẻ", "điện thoại" = "sản phẩm"), mô hình chưa thực sự "hiểu" được ngữ nghĩa logic hoàn chỉnh mà chỉ biểu diễn dựa trên ngữ cảnh từ xuất hiện chung.
 
 ---
 
