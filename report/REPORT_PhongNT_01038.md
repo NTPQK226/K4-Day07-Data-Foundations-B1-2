@@ -98,7 +98,7 @@ platform win32 -- Python 3.11.9, pytest-9.1.1, pluggy-1.6.0 -- D:\AI20K\K4-Day07
 cachedir: .pytest_cache
 rootdir: D:\AI20K\K4-Day07-Data-Foundations-B1-2
 plugins: anyio-4.14.2
-collected 42 items                                                                                                                   
+collected 42 items                                                                                                                 
 
 tests/test_solution.py::TestProjectStructure::test_root_main_entrypoint_exists PASSED                                              [  2%]
 tests/test_solution.py::TestProjectStructure::test_src_package_exists PASSED                                                       [  4%]
@@ -169,22 +169,91 @@ Kết quả bất ngờ nhất là cặp 5: dù cả hai câu đều thuộc ch�
 
 ## 5. Kết quả truy xuất của tôi (Competition Results) — Cá nhân (10 điểm)
 
-Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân của bạn trong gói `src`. **5 câu hỏi này phải trùng với các thành viên cùng nhóm** (xem `REPORT_NHOM.md`).
+> **Người C — SentenceChunker(max_sentences=3).** Embedder: Mock (giới hạn: không biểu diễn ngữ nghĩa — scores chỉ phản ánh kỹ thuật, không phản ánh chất lượng ngữ nghĩa thực). Corpus: 8 tài liệu Shopee thật (help.shopee.vn), 13,405 ký tự.
 
+### Chiến lược riêng của tôi
 
-| # | Câu hỏi (Query) | Top-1 Chunk truy xuất được (tóm tắt) | Điểm Score | Có liên quan không? (Relevant) | Câu trả lời của Agent (tóm tắt) |
-| - | ----------------- | ------------------------------------------ | ------------ | --------------------------------- | ------------------------------------- |
-| 1 |                   |                                            |              |                                   |                                       |
-| 2 |                   |                                            |              |                                   |                                       |
-| 3 |                   |                                            |              |                                   |                                       |
-| 4 |                   |                                            |              |                                   |                                       |
-| 5 |                   |                                            |              |                                   |                                       |
+- **Loại:** SentenceChunker (chia theo ranh giới câu)
+- **Tham số:** `max_sentences_per_chunk=3`
+- **Lý do chọn:** Giữ trọn vẹn ngữ nghĩa từng câu — không cắt đứt câu giữa chừng. Các tài liệu chính sách TMĐT được viết theo cấu trúc câu hoàn chỉnh, nên giữ nguyên câu sẽ bảo toàn ý nghĩa tốt hơn.
 
-**Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** __ / 5
+### Baseline Comparison
+
+| Chiến lược | Số chunk (cam-ban-hang-gia) | AvgLen | Coherence |
+|-----------|---------------------------|--------|-----------|
+| FixedSize(200,0) | 10 | 185 | Trung binh — cắt ngang câu |
+| **Sentence(3)** | **3** | **615** | **Tốt — giữ trọn câu** |
+| Recursive(200) | 18 | 101 | Tốt — cắt theo separator |
+
+> **Nhận xét baseline:** SentenceChunker tạo ít chunk hơn (3 vs 10/18) nhưng mỗi chunk rất dài (615 ký tự avg). Đây là trade-off: ít chunk → ít noise nhưng mỗi chunk có thể chứa nhiều ý khác nhau.
+
+### Chiến lược so sánh giữa các thành viên
+
+| Người | Strategy | Số chunk | AvgLen |
+|-------|----------|---------|--------|
+| A | FixedSize(200,50) | 33 | 200 |
+| B | Recursive(500) | 12 | 415 |
+| **C [Phong]** | **Sentence(3)** | **9** | **555** |
+| D | FixedSize(500,50) | 11 | 500 |
+
+### 5 Câu hỏi Benchmark
+
+> **Loại:** đa dạng (số liệu, điều kiện, quy trình, ngoại lệ). Mỗi câu có gold keywords và gold doc để kiểm tra.
+
+#### A/B Filter Analysis (Câu 2: Phí thanh toán, filter=seller)
+
+| | Top-1 doc | Score | Gold? |
+|--|-----------|-------|-------|
+| [A] Không filter | `tranh-chap-khieu-nai::chunk_2` | 0.3000 | Không |
+| [B] Filter seller | `phi-san-cho-nguoi-ban::chunk_3` | 0.2079 | Không |
+
+**Kết quả khác nhau** — filter `seller` thu hẹp corpus đúng vai, nhưng top-1 cả hai đều không chứa gold keywords. **Filter không cứu được retrieval vì corpus gốc thiếu thông tin `% phí thanh toán`.**
+
+### Kết quả Benchmark — Chi tiết theo Rubric
+
+> Rubric: **2 điểm** = top-3 có gold keywords + agent trả lời đúng; **1 điểm** = top-3 có gold keywords nhưng agent chưa chính xác; **0 điểm** = không có bằng chứng trong top-3.
+
+| # | Loại | Câu hỏi | Top-1 doc | Score | Gold keywords trong top-3? | Diem |
+|---|------|---------|-----------|-------|--------------------------|------|
+| 1 | so lieu | Mất bao lâu để tôi nhận được tiền hoàn vào ví ShopeePay nếu hủy đơn? | `phi-san-cho-nguoi-ban::chunk_1` | 0.1954 | Không | 0/2 |
+| 2 | dieu kien | Phí thanh toán cố định hiện tại trên mỗi đơn hàng là bao nhiêu phần trăm? (filter=seller) | `phi-san-cho-nguoi-ban::chunk_3` | 0.2079 | Không | 0/2 |
+| 3 | quy trinh | Làm thế nào để áp dụng mã miễn phí vận chuyển Extra? | `tranh-chap-khieu-nai::chunk_0` | 0.3483 | Không | 0/2 |
+| 4 | ngoai le | Nếu tôi phát hiện shop gửi hàng fake thì Shopee có đền bù không? | `thanh-toan-shopee-pay::chunk_0` | 0.1882 | **Có** (top-1: ShopeePay, top-2: cam-ban-hang-gia có "hàng giả") | 1/2 |
+| 5 | so lieu | Shopee Xu của tôi sẽ hết hạn vào ngày nào? | `tranh-chap-khieu-nai::chunk_1` | 0.2628 | Không | 0/2 |
+
+**Tổng: 1/10** (chỉ câu 4 có gold keywords trong top-3, nhưng agent trả lời không chính xác → 1 điểm)
+
+### Failure Case phân tích chi tiết
+
+**Failure Case 1 — Câu 1 (số liệu: thời gian hoàn tiền ShopeePay)**
+- **Query:** "Mất bao lâu để tôi nhận được tiền hoàn vào ví ShopeePay nếu hủy đơn?"
+- **Top-1:** `phi-san-cho-nguoi-ban::chunk_1` — "Phạm vi áp dụng Quy định này quy định về việc đăng bán các sản phẩm trên Sàn Shopee."
+- **Gold keywords:** `["hoan", "tien", "ShopeePay", "thoi gian"]` — không có trong top-3
+- **Nguyên nhân:** Corpus `thanh-toan-shopee-pay` có heading nhưng phần body excerpt không chứa thông tin thời gian hoàn tiền. Chunk dài (3 câu/chunk) đẩy nội dung cụ thể xuống chunk 2–3. Top-1 toàn phần mở đầu chung.
+- **Đề xuất:** (1) Bổ sung corpus đầy đủ hơn; (2) Giảm `max_sentences` xuống 1–2; (3) Dùng embedder ngữ nghĩa thực.
+
+**Failure Case 2 — Câu 4 (ngoại lệ: hàng fake — điểm 1/2)**
+- **Query:** "Nếu tôi phát hiện shop gửi hàng fake thì Shopee có đền bù không?"
+- **Top-1:** `thanh-toan-shopee-pay::chunk_0` — đúng chủ đề Shopee nhưng không đề cập hàng fake
+- **Top-2:** `cam-ban-hang-gia::chunk_2` — chứa "hàng nhái, hàng giả" **(GOLD)** nhưng không đề cập đền bù
+- **Nguyên nhân:** Chunk chứa từ "hàng giả" nhưng không chứa cụm "đền bù" / "bồi thường" trong cùng chunk. Chunk coherence tốt nhưng chunk không bao quát đủ ngữ cảnh cho câu trả lời.
+- **Đề xuất:** (1) Tăng `chunk_size` hoặc thêm overlap để bao quát nhiều ngữ cảnh hơn; (2) Thêm `cam-ban-hang-gia` vào corpus để có đủ ngữ cảnh.
+
+### Các góc nhìn đánh giá
+
+| Góc nhìn | Kết quả |
+|-----------|---------|
+| **Precision** | Top-3 chỉ có 1/5 câu chứa gold keywords — corpus thiếu nội dung cụ thể |
+| **Chunk Coherence** | SentenceChunker giữ nguyên câu tốt, nhưng chunk quá dài (avg 555 ký tự) làm tăng noise |
+| **Metadata Utility** | Filter seller thu hẹp corpus đúng, nhưng không cứu được vì corpus thiếu thông tin |
+| **Grounding** | Agent trả lời dựa trên chunk đầu tiên (extractive stub), không phải chunk tốt nhất |
+| **Failure Case** | 4/5 câu thất bại rõ ràng vì corpus thiếu nội dung; 1 câu (4) thuộc nhóm "chunk đúng tài liệu sai section" |
+
+**Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** 1 / 5 — **1/10 điểm theo rubric**
 
 **Điều hay nhất tôi học được từ thành viên khác / nhóm khác (qua demo):**
 
-> *Viết 2-3 câu:*
+> Ba bài học chính từ benchmark: (1) **SentenceChunker có chunk coherence tốt nhất nhưng tạo chunk quá dài** — avg 555 ký tự/chunk khiến phần mở đầu chiếm chunk đầu tiên, đẩy nội dung cụ thể xuống dưới. So với FixedSize(200,50) tạo 33 chunk, SentenceChunker chỉ tạo 9 chunk trên cùng corpus — ít opportunity hơn cho retrieval đúng. (2) **Corpus quyết định chất lượng truy xuất** — 4/5 câu thất bại không phải vì chunking kém mà vì corpus gốc chỉ là excerpt mở đầu, thiếu thông tin chi tiết. (3) **Mock embedder không đáng tin cậy** — scores 0.1–0.35, không phân biệt được chunk nào có ngữ nghĩa gần. Cần OpenAI/local embedder mới có benchmark có ý nghĩa.
 
 ---
 
@@ -196,6 +265,6 @@ Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân củ
 | Khởi động (Warm-up)                               | 5 / 5                 |
 | Hướng tiếp cận của tôi (My Approach)           | 10 / 10               |
 | Hoàn thiện code (Core Implementation — tests)     | 30 / 30               |
-| Dự đoán độ tương tự (Similarity Predictions) | 5 / 5                  |
-| Kết quả truy xuất của tôi (Competition Results) | 10 / 10               |
-| **Tổng phần cá nhân**                            | **60 / 60**           |
+| Dự đoán độ tương tự (Similarity Predictions) | 4 / 5                  |
+| Kết quả truy xuất của tôi (Competition Results) | 1 / 10                 |
+| **Tổng phần cá nhân**                            | **50 / 60**            |
