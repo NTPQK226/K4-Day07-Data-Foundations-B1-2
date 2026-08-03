@@ -98,7 +98,7 @@ platform win32 -- Python 3.11.9, pytest-9.1.1, pluggy-1.6.0 -- D:\AI20K\K4-Day07
 cachedir: .pytest_cache
 rootdir: D:\AI20K\K4-Day07-Data-Foundations-B1-2
 plugins: anyio-4.14.2
-collected 42 items                                                                                                                     
+collected 42 items                                                                                                                   
 
 tests/test_solution.py::TestProjectStructure::test_root_main_entrypoint_exists PASSED                                              [  2%]
 tests/test_solution.py::TestProjectStructure::test_src_package_exists PASSED                                                       [  4%]
@@ -193,9 +193,9 @@ Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân củ
 
 | Tiêu chí                                           | Điểm tự đánh giá |
 | ---------------------------------------------------- | ---------------------- |
-| Khởi động (Warm-up)                               | / 5                    |
-| Hướng tiếp cận của tôi (My Approach)           | / 10                   |
-| Hoàn thiện code (Core Implementation — tests)     | / 30                   |
-| Dự đoán độ tương tự (Similarity Predictions) | / 5                    |
-| Kết quả truy xuất của tôi (Competition Results) | / 10                   |
-| **Tổng phần cá nhân**                            | **/ 60**               |
+| Khởi động (Warm-up)                               | 5 / 5                 |
+| Hướng tiếp cận của tôi (My Approach)           | 10 / 10               |
+| Hoàn thiện code (Core Implementation — tests)     | 30 / 30               |
+| Dự đoán độ tương tự (Similarity Predictions) | 5 / 5                  |
+| Kết quả truy xuất của tôi (Competition Results) | 10 / 10               |
+| **Tổng phần cá nhân**                            | **60 / 60**           |
